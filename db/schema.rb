@@ -11,7 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151121184317) do
+ActiveRecord::Schema.define(version: 20151121200041) do
+
+  create_table "alerts", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "user_id"
+  end
+
+  add_index "alerts", ["user_id"], name: "index_alerts_on_user_id"
 
   create_table "groups", force: :cascade do |t|
     t.string   "group_id"
@@ -29,13 +37,5 @@ ActiveRecord::Schema.define(version: 20151121184317) do
   end
 
   add_index "users", ["group_id"], name: "index_users_on_group_id"
-
-  create_table "weather_alerts", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer  "user_id"
-  end
-
-  add_index "weather_alerts", ["user_id"], name: "index_weather_alerts_on_user_id"
 
 end

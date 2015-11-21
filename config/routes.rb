@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :weather_alerts
+  resources :alerts
   resources :groups
   resources :users
   
