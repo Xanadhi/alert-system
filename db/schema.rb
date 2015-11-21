@@ -11,7 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151121195857) do
+ActiveRecord::Schema.define(version: 20151121223257) do
+
+  create_table "alert_subscription", id: false, force: :cascade do |t|
+    t.integer "user_id",       null: false
+    t.integer "alert_type_id", null: false
+  end
+
+  add_index "alert_subscription", ["alert_type_id", "user_id"], name: "index_alert_subscription_on_alert_type_id_and_user_id"
+
+  create_table "alert_types", force: :cascade do |t|
+    t.string   "type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "alerts", force: :cascade do |t|
     t.datetime "created_at", null: false
