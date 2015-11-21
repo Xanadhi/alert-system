@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151121174329) do
+ActiveRecord::Schema.define(version: 20151121184317) do
 
   create_table "groups", force: :cascade do |t|
     t.string   "group_id"
@@ -25,11 +25,17 @@ ActiveRecord::Schema.define(version: 20151121174329) do
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.string   "phone_number"
+    t.integer  "group_id"
   end
+
+  add_index "users", ["group_id"], name: "index_users_on_group_id"
 
   create_table "weather_alerts", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "user_id"
   end
+
+  add_index "weather_alerts", ["user_id"], name: "index_weather_alerts_on_user_id"
 
 end
