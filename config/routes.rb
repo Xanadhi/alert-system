@@ -1,4 +1,16 @@
 Rails.application.routes.draw do
+  root to: 'twilio#index'
+
+  # resources :twilio
+
+  get 'twilio/sendsms', to: 'twilio#sendsms'
+  post 'twilio/sendsms', to: 'twilio#sendsms'
+
+  get 'twilio/receivesms', to: 'twilio#receivesms'
+  post 'twilio/receivesms', to: 'twilio#receivesms'
+
+  get 'twilio/checkmessages', to: 'twilio#checkmessages', defaults: {format: "json"}
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
