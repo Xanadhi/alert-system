@@ -1,5 +1,6 @@
 require 'twilio-ruby'
 require 'pry'
+require 'alert_transaction'
 
 class TwilioController < ApplicationController
   # include Webhookable
@@ -15,6 +16,14 @@ class TwilioController < ApplicationController
   end
 
   def send_sms
+
+    puts "Mark fantastic test thingy!"
+    alert = AlertTransaction.new 
+    alert.setOperator("SUBSCRIBE")
+    alert.setKeyword("WEATHER")
+    outputString = alert.outString
+    puts outputString
+
     # number_to_send_to = params[:number].to_i
     # message = params[:body]
     # travel_time = params[:travelTime]
@@ -23,7 +32,7 @@ class TwilioController < ApplicationController
     @twilio_client = Twilio::REST::Client.new(Rails.application.secrets.twilio_account_sid, Rails.application.secrets.twilio_auth_token)
     @twilio_client.account.messages.create({
       :from => "+1#{twilio_phone_number}",
-      :to => 6477040202,
+      :to => 6479625447,
       :body => "Testing out Twilio SMS at #{current_time}"
     })
     redirect_to alerts_url

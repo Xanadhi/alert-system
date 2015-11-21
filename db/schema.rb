@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151121200041) do
+ActiveRecord::Schema.define(version: 20151121195857) do
 
   create_table "alerts", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -25,8 +25,6 @@ ActiveRecord::Schema.define(version: 20151121200041) do
     t.string   "group_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-
-
   end
 
   create_table "users", force: :cascade do |t|
