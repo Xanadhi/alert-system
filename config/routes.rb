@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :weather_alerts
+  resources :groups
   resources :users
   
   root to: 'users#index'
