@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
+  resources :alerts
   resources :users
 
-  root to: 'users#index'
+  root to: 'alerts#index'
 
   # resources :twilio
 

@@ -19,13 +19,14 @@ class TwilioController < ApplicationController
     # message = params[:body]
     # travel_time = params[:travelTime]
     twilio_phone_number = "2892781799"
+    current_time = Time.now
     @twilio_client = Twilio::REST::Client.new(Rails.application.secrets.twilio_account_sid, Rails.application.secrets.twilio_auth_token)
     @twilio_client.account.messages.create({
       :from => "+1#{twilio_phone_number}",
       :to => 6477040202,
-      :body => "Testing out Twilio SMS"
+      :body => "Testing out Twilio SMS at #{current_time}"
     })
-    redirect_to users_url
+    redirect_to alerts_url
   end
 
   def receive_sms
