@@ -2,18 +2,18 @@ Rails.application.routes.draw do
   resources :alerts
   resources :groups
   resources :users
-  
-  root to: 'users#index'
+
+  root to: 'alerts#index'
 
   # resources :twilio
 
-  get 'twilio/sendsms', to: 'twilio#sendsms'
-  post 'twilio/sendsms', to: 'twilio#sendsms'
+  get 'twilio/send_sms', to: 'twilio#send_sms'
+  post 'twilio/send_sms', to: 'twilio#send_sms'
 
-  get 'twilio/receivesms', to: 'twilio#receivesms'
-  post 'twilio/receivesms', to: 'twilio#receivesms'
+  get 'twilio/receive_sms', to: 'twilio#receive_sms'
+  post 'twilio/receive_sms', to: 'twilio#receive_sms'
 
-  get 'twilio/checkmessages', to: 'twilio#checkmessages', defaults: {format: "json"}
+  get 'twilio/check_messages', to: 'twilio#check_messages', defaults: {format: "json"}
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

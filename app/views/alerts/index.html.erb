@@ -1,5 +1,6 @@
 <p id="notice"><%= notice %></p>
 
+<div id="backplate">
 <h1>Listing Alerts</h1>
 
 <table>
@@ -23,3 +24,9 @@
 <br>
 
 <%= link_to 'New Alert', new_alert_path %>
+
+<br />
+
+<%= button_to "Send Andy an SMS", twilio_send_sms_path %>
+
+</div>
