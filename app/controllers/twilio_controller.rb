@@ -32,10 +32,6 @@ class TwilioController < ApplicationController
     body = params[:Body].upcase
     senderNumber = params[:From]
     twilio_phone_number = "2892781799"
-      twiml = Twilio::TwiML::Response.new do |r|
-        r.Message "Thank you for your message <3"     
-    end
-    render :text => twiml.text, :content_type => "text/xml"
 
     puts "Received sms #{body}"
       action = MessageParser.parse(body, senderNumber)
@@ -65,6 +61,10 @@ class TwilioController < ApplicationController
 
     puts "Done Parse"
 
+    twiml = Twilio::TwiML::Response.new do |r|
+        r.Message "You will now receive alerts about #{keyword}"     
+      end
+    render :text => twiml.text, :content_type => "text/xml"
   end
 
   def check_messages
