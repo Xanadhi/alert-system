@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151121223257) do
+ActiveRecord::Schema.define(version: 20151122002102) do
 
   create_table "alert_subscription", id: false, force: :cascade do |t|
     t.integer "user_id",       null: false
@@ -36,8 +36,9 @@ ActiveRecord::Schema.define(version: 20151121223257) do
 
   create_table "groups", force: :cascade do |t|
     t.string   "group_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.string   "group_member_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -46,9 +47,6 @@ ActiveRecord::Schema.define(version: 20151121223257) do
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.string   "phone_number"
-    t.integer  "group_id"
   end
-
-  add_index "users", ["group_id"], name: "index_users_on_group_id"
 
 end
