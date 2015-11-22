@@ -7,6 +7,7 @@ class MessageParser
         if (result != nil)
             result.setNumber(number)
             puts result.outString
+            return result
         else
             puts "Result of Alerts parse nil.."
         end
