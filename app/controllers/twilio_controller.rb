@@ -1,6 +1,7 @@
 require 'twilio-ruby'
 require 'pry'
 require 'alert_transaction'
+require 'message_parsing'
 
 class TwilioController < ApplicationController
   # include Webhookable
@@ -17,16 +18,10 @@ class TwilioController < ApplicationController
 
   def send_sms
 
-    puts "Mark fantastic test thingy!"
-    alert = AlertTransaction.new 
-    alert.setOperator("SUBSCRIBE")
-    alert.setKeyword("WEATHER")
-    outputString = alert.outString
-    puts outputString
-
     # number_to_send_to = params[:number].to_i
     # message = params[:body]
     # travel_time = params[:travelTime]
+
     twilio_phone_number = "2892781799"
     current_time = Time.now
     @twilio_client = Twilio::REST::Client.new(Rails.application.secrets.twilio_account_sid, Rails.application.secrets.twilio_auth_token)
@@ -39,6 +34,7 @@ class TwilioController < ApplicationController
   end
 
   def receive_sms
+
     body = params[:Body].upcase
     senderNumber = params[:From]
     # delivery = Delivery.where(["number LIKE ?", "#{senderNumber}"]).first
@@ -49,6 +45,11 @@ class TwilioController < ApplicationController
         r.Message "Thank you for your message <3"     
     end
     render :text => twiml.text, :content_type => "text/xml"
+
+    puts "Received sms #{body}"
+    MessageParser.parse(body, senderNumber)
+    puts "Done Parse"
+
   end
 
   def check_messages

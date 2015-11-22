@@ -1,8 +1,15 @@
+require 'alert_transaction'
+
 class MessageParser
 
-  def dummy(dummy1, dummy2)
-    @foo = 1
-    @bar = 2
-  end
+    def self.parse(message, number)
+        result = AlertTransaction.parseMessage(message)
+        if (result != nil)
+            result.setNumber(number)
+            puts result.outString
+        else
+            puts "Result of Alerts parse nil.."
+        end
+    end
 
 end
