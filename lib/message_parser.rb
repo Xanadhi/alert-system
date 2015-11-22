@@ -13,6 +13,7 @@ class MessageParser
             result = GroupTransaction.parseMessage(message)
             result.setNumber(number)
             puts result.outString
+            return result
         else
             puts "Result of Alerts parse nil.."
         end

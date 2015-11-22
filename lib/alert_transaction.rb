@@ -101,6 +101,10 @@ class AlertTransaction
 		@phoneNumber = number.to_s
 	end
 
+	def getNumber
+		return @phoneNumber
+	end
+
     def outString
     	puts "Alert Transaction
     		  operator :: #{@localOperator}

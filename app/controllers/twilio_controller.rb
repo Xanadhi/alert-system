@@ -1,11 +1,11 @@
 require 'twilio-ruby'
 require 'pry'
 require 'alert_transaction'
-require 'message_parsing'
+require 'message_parser'
 
 class TwilioController < ApplicationController
   # include Webhookable
-
+    before_action :load_user, only: :receive_sms
 #   after_filter :set_header
 #  
 #   skip_before_action :verify_authenticity_token
@@ -17,11 +17,6 @@ class TwilioController < ApplicationController
   end
 
   def send_sms
-
-    # number_to_send_to = params[:number].to_i
-    # message = params[:body]
-    # travel_time = params[:travelTime]
-
     twilio_phone_number = "2892781799"
     current_time = Time.now
     @twilio_client = Twilio::REST::Client.new(Rails.application.secrets.twilio_account_sid, Rails.application.secrets.twilio_auth_token)
@@ -34,22 +29,42 @@ class TwilioController < ApplicationController
   end
 
   def receive_sms
-
     body = params[:Body].upcase
     senderNumber = params[:From]
-    # delivery = Delivery.where(["number LIKE ?", "#{senderNumber}"]).first
-    # senderName = delivery.name
-    # senderAddress = delivery.address
     twilio_phone_number = "2892781799"
-      twiml = Twilio::TwiML::Response.new do |r|
-        r.Message "Thank you for your message <3"     
-    end
-    render :text => twiml.text, :content_type => "text/xml"
 
     puts "Received sms #{body}"
-    MessageParser.parse(body, senderNumber)
+      action = MessageParser.parse(body, senderNumber)
+      operator = action.getCurrentOperator
+      keyword = action.getCurrentKeyword
+      number = action.getNumber
+
+    if !@user
+      @user = User.new(phone_number: senderNumber)
+      if @user.save
+        puts "New user created"
+      else
+        puts "User could not be created"
+      end
+    end   
+
+    @alert = AlertType.where(name: keyword).first
+
+    case operator
+      when "ADD"
+        as = @user.alert_subscriptions.new(alert_type: @alert)
+        as.save
+      when "SUBSCRIBE" then puts "Unsubscribing this user"
+      when "REMOVE" then puts "Removing this user"
+      when "UNSUBSCRIBE" then puts "Unsubscribing this user"
+    end
+
     puts "Done Parse"
 
+    twiml = Twilio::TwiML::Response.new do |r|
+        r.Message "You will now receive alerts about #{keyword}"     
+      end
+    render :text => twiml.text, :content_type => "text/xml"
   end
 
   def check_messages
@@ -57,10 +72,16 @@ class TwilioController < ApplicationController
     #binding.pry
   end
 
-  private
-  def notify_driver(message)
-    @@messages << message
-    #binding.pry
+  protected
+
+  # def user_params
+  #   phone_number = params[:From]
+  #   params.require(:user).permit(
+  #     phone_number)
+  # end
+
+  def load_user
+    @user = User.where(phone_number: params[:From]).first
   end
 
 end
