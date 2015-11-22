@@ -1,3 +1,6 @@
+require 'string_utils'
+require 'pry'
+
 class GroupTransaction
 	
 	@@OPERATORS = ["CREATE", 
@@ -29,8 +32,17 @@ class GroupTransaction
 	    if (@containsOperator)
 	    	group = GroupTransaction.new
 	    	group.setOperator(@operator)
-	    	output = group.outString
-	    	# puts "Created alert from parsed message : #{output}"
+
+	    	if(@operator == "JOIN") 
+				@parsedNumber = message.convert_to_phone
+
+				#need to check if number exists in DB here
+	    		if ((@parsedNumber != nil))
+	    			group.setGroupId(@parsedNumber)
+	    		else
+	    			raise "Bad number passed into a JOIN cause."
+	    		end
+	    	end
 	    	return group
 		else
 			puts "Did not create group!"
@@ -60,9 +72,23 @@ class GroupTransaction
 		return @localOperator
 	end
 
+	def setGroupId(id)
+		@localGroupId = id
+	end
+
+	def getGroupId
+		return @localGroupId
+	end
+
+	def setNumber(number)
+		@phoneNumber = number.to_s
+	end
+
     def outString
     	puts "Group Transaction
-    		  operator :: #{@localOperator}"
+    		  operator    :: #{@localOperator}
+    		  groupNumber :: #{@localGroupId}
+    		  phoneNumber :: #{@phoneNumber}"
     end
 
     def execute

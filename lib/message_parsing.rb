@@ -1,10 +1,16 @@
 require 'alert_transaction'
+require 'group_transaction'
 
 class MessageParser
 
     def self.parse(message, number)
-        result = AlertTransaction.parseMessage(message)
-        if (result != nil)
+        
+        if (AlertTransaction.parseMessage(message) != nil)
+            result = AlertTransaction.parseMessage(message)
+            result.setNumber(number)
+            puts result.outString
+        elsif (GroupTransaction.parseMessage(message) != nil)
+            result = GroupTransaction.parseMessage(message)
             result.setNumber(number)
             puts result.outString
         else
