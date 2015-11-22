@@ -9,6 +9,7 @@ class MessageParser
             result = AlertTransaction.parseMessage(message)
             result.setNumber(number)
             puts result.outString
+            return result
         elsif (GroupTransaction.parseMessage(message) != nil)
             result = GroupTransaction.parseMessage(message)
             result.setNumber(number)
