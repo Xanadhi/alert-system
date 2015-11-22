@@ -43,7 +43,7 @@ class TwilioController < ApplicationController
       keyword = action.getCurrentKeyword
       number = action.getNumber
 
-    if @user.empty?
+    if !@user
       @user = User.new(phone_number: senderNumber)
       if @user.save
         puts "New user created"
@@ -52,8 +52,12 @@ class TwilioController < ApplicationController
       end
     end   
 
+    @alert = AlertType.where(name: keyword).first
+
     case operator
-      when "ADD" then puts "Adding this user"
+      when "ADD"
+        as = @user.alert_subscriptions.new(alert_type: @alert)
+        as.save
       when "SUBSCRIBE" then puts "Unsubscribing this user"
       when "REMOVE" then puts "Removing this user"
       when "UNSUBSCRIBE" then puts "Unsubscribing this user"
@@ -77,7 +81,7 @@ class TwilioController < ApplicationController
   # end
 
   def load_user
-    @user = User.where(phone_number: params[:From])
+    @user = User.where(phone_number: params[:From]).first
   end
 
 end
